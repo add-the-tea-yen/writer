@@ -13,7 +13,7 @@ const config = {
       precompress: false
     }),
     paths: {
-      base: dev ? '' : '/YOUR-REPO-NAME' // e.g. '/obsidian-clone' — must match your GitHub repo name exactly
+      base: dev ? '' : '/writer' // e.g. '/obsidian-clone' — must match your GitHub repo name exactly
     }
   }
 };
