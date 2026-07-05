@@ -486,7 +486,7 @@
       wrapper.style.background = '#ffffff';
       wrapper.style.color = '#111111';
       wrapper.style.padding = '32px';
-      wrapper.style.fontFamily = '-apple-system, sans-serif';
+      wrapper.style.fontFamily = "'Inter', -apple-system, sans-serif";
       wrapper.style.width = '700px';
 
       const titleEl = document.createElement('h1');
@@ -495,11 +495,20 @@
       titleEl.style.marginBottom = '16px';
       wrapper.appendChild(titleEl);
 
+      // Collapse any run of consecutive blank lines into a single paragraph gap,
+      // instead of stacking one empty block per blank line.
+      let pendingGap = false;
       for (const line of lines) {
+        if (line.text.trim() === '') {
+          pendingGap = true;
+          continue;
+        }
         const lineDiv = document.createElement('div');
         lineDiv.innerHTML = renderLineHTML(line.text, $notesByTitle);
+        lineDiv.style.marginTop = pendingGap ? '14px' : '0';
         lineDiv.style.marginBottom = '4px';
         wrapper.appendChild(lineDiv);
+        pendingGap = false;
       }
 
       wrapper.querySelectorAll('*').forEach(el => { el.style.color = '#111111'; });

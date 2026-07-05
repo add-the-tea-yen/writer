@@ -61,7 +61,7 @@
 
 <style>
   .loading { display: flex; align-items: center; justify-content: center; height: 100vh; color: #888; }
-  .app { display: flex; height: 100vh; font-family: -apple-system, sans-serif; }
+  .app { display: flex; height: 100vh; font-family: 'Inter', -apple-system, sans-serif; }
   main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
   .topbar { display: flex; align-items: center; gap: 8px; padding: 8px 16px; border-bottom: 1px solid #2a2a2a; }
   .topbar button { background: #2a2a2a; color: #ddd; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 13px; }
