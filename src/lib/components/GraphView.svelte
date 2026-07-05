@@ -211,6 +211,7 @@
 <div class="graph-wrap">
   <button class="reset-btn" onclick={resetView}>Reset view</button>
   <!-- svelte-ignore a11y_no_static_element_interactions -->
+  <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
   <svg
     bind:this={svgEl}
     viewBox="{vx} {vy} {vw} {vh}"
