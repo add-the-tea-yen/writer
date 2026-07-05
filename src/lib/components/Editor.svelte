@@ -13,7 +13,7 @@
   let activeLineIndex = $state(null);
   let pendingCaret = null;
   let lineRefs = {};
-  let containerEl;
+  let containerEl = $state();
   let saveTimeout;
   let exporting = $state(false);
 
@@ -231,7 +231,6 @@
     const sel = window.getSelection();
     if (!sel || !sel.rangeCount) { e.preventDefault(); return; }
 
-    // block rich-text formatting commands entirely (bold shortcuts etc.)
     if (e.inputType && e.inputType.startsWith('format')) {
       e.preventDefault();
       return;
@@ -242,7 +241,6 @@
 
     if (!lineEl || !activeId || lineEl.dataset.lineId !== activeId) {
       e.preventDefault();
-      // if user starts typing on an inactive line, activate it instead of eating the keystroke silently
       if (lineEl) {
         const idx = lines.findIndex(l => l.id === lineEl.dataset.lineId);
         if (idx !== -1) {
@@ -288,7 +286,6 @@
     }
     if (e.target.closest('a')) return;
 
-    // don't hijack an active drag-selection
     const sel = window.getSelection();
     if (sel && !sel.isCollapsed) return;
 
@@ -305,13 +302,11 @@
     activateLastLine();
   }
 
-  // --- container-level input (only the active line's text is ever synced back) ---
   function handleContainerInput(e) {
     if (activeLineIndex === null) return;
     const line = lines[activeLineIndex];
     const el = lineRefs[line.id];
     if (!el) return;
-    if (e.target !== el && !el.contains(e.target)) return;
 
     lines[activeLineIndex].text = el.textContent;
     scheduleContentSave();
@@ -333,7 +328,6 @@
       return;
     }
 
-    // block bold/italic/underline shortcuts from mutating contenteditable DOM
     if ((e.ctrlKey || e.metaKey) && ['b', 'i', 'u'].includes(e.key.toLowerCase())) {
       e.preventDefault();
       return;
@@ -366,7 +360,6 @@
 
     if (activeLineIndex === null) return;
 
-    // let native browser selection handle shift+arrow across lines
     if (e.shiftKey && ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
       return;
     }
@@ -495,8 +488,6 @@
       titleEl.style.marginBottom = '16px';
       wrapper.appendChild(titleEl);
 
-      // Collapse any run of consecutive blank lines into a single paragraph gap,
-      // instead of stacking one empty block per blank line.
       let pendingGap = false;
       for (const line of lines) {
         if (line.text.trim() === '') {
@@ -548,6 +539,9 @@
     <div
       class="lines-container"
       contenteditable="true"
+      role="textbox"
+      aria-multiline="true"
+      aria-label="Note content"
       bind:this={containerEl}
       onclick={handleContainerClick}
       onkeydown={handleContainerKeydown}
