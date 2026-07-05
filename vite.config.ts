@@ -16,8 +16,10 @@ export default defineConfig({
 				assets: 'build',
 				fallback: 'index.html',
 				precompress: false
-			})
+			}),
+			paths: {
+				base: dev ? '' : '/writer'
+			}
 		})
-	],
-	base: dev ? '' : '/writer'
+	]
 });
